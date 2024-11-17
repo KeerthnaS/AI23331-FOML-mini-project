@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwriting Generator</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        /* Form Container */
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            font-size: 1em;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+            height: 100px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1em;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Output Section */
+        #output {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #output h2 {
+            margin-bottom: 10px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f4f4f9;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Handwriting Generator</h1>
+    </header>
+    <div class="container">
+        <form id="textForm">
+            <label for="text">Enter your text below:</label>
+            <textarea id="text" name="text" placeholder="Type something to generate handwriting..." required></textarea>
+            <button type="submit">Generate Handwriting</button>
+        </form>
+        <div id="output">
+            <h2>Generated Output:</h2>
+            <img id="generatedImage" src="" alt="Generated handwriting will appear here">
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Handwriting Generator | Powered by AI</p>
+    </footer>
+
+    <script>
+        document.getElementById('textForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const textInput = document.getElementById('text').value;
+            const formData = new FormData();
+            formData.append('text', textInput);
+
+            const response = await fetch('/generate', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('generatedImage').src = 'data:image/png;base64,' + data.image;
+            } else {
+                alert('Error generating handwriting');
+            }
+        });
+    </script>
+</body>
+</html>
